@@ -9,7 +9,7 @@ app.get('/api/books', (req, res) => {
     {
         res.status(417).json({
             "message": `Page limit is required.`,
-            "URI": "https://localhost:5000/api/books?page=1&limit=5"
+            "URI": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5"
         })
     }
     // Check if page number is not passed but page limit is passed to the URI.
@@ -17,7 +17,7 @@ app.get('/api/books', (req, res) => {
     {
         res.status(417).json({
             "message": `Starting page is required.`,
-            "URI": "https://localhost:5000/api/books?page=1&limit=5"
+            "URI": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5"
         })
     }
     // Check if both page number and page limit were passed to the URI.
@@ -27,7 +27,20 @@ app.get('/api/books', (req, res) => {
         Book.find()
         .then((books) => {
             res.status(200).json({
-                books
+                books,
+                //HATEOAS implementation
+                "links": [
+                    {
+                        "rel": "book",
+                        "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                        "action": "GET"
+                    },
+                    {
+                        "rel": "book",
+                        "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                        "action": "DELETE"
+                    }
+                ]
             })
         })
         .catch((err) => {
@@ -48,10 +61,10 @@ app.get('/api/books', (req, res) => {
             res.status(417).json({
                 "message": `Sorting mode is required.`,
                 "solution": "Chose one of the examples below, note sortMode could be either 'asc' or 'desc'.",
-                "URI1": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
-                "URI2": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
-                "URI3": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
-                "URI4": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
+                "URI1": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
+                "URI2": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
+                "URI3": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
+                "URI4": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
             })
         }
         // Checks if sortBy is not passed but sortMode is passed to the URI
@@ -60,10 +73,10 @@ app.get('/api/books', (req, res) => {
             res.status(417).json({
                 "message": `SortBy is required.`,
                 "solution": "Chose one of the examples below, note sortBy could be either 'title' or 'author'.",
-                "URI1": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
-                "URI2": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
-                "URI3": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
-                "URI4": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
+                "URI1": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
+                "URI2": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
+                "URI3": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
+                "URI4": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
             })
         }
         // Checks if both sortBy and sortMode were passed to the URI
@@ -78,10 +91,10 @@ app.get('/api/books', (req, res) => {
                 res.status(417).json({
                     "message": `SortBy is incorrect.`,
                     "solution": "Chose one of the examples below, note sortBy's value could be either 'author' or 'title' and sortMode's value could be either 'asc' or 'desc'.",
-                    "URI1": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
-                    "URI2": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
-                    "URI3": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
-                    "URI4": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
+                    "URI1": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
+                    "URI2": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
+                    "URI3": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
+                    "URI4": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
                 })
             }
             // Checks if the sortMode's value that was passed to the URI is needed either in ascending or descending order (with value 'asc' or 'desc')
@@ -90,10 +103,10 @@ app.get('/api/books', (req, res) => {
                 res.status(417).json({
                     "message": `SortMode is incorrect.`,
                     "solution": "Chose one of the examples below, note sortMode's value could be either 'asc' or 'desc'.",
-                    "URI1": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
-                    "URL2": "https://localhost:5000/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
-                    "URI3": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
-                    "URI4": "https://localhost:5000/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
+                    "URI1": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=asc",
+                    "URL2": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=title&sortMode=desc",
+                    "URI3": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=asc",
+                    "URI4": "https://book-directory-system-api.herokuapp.com/api/books?page=1&limit=5&sortBy=author&sortMode=desc"
                 })
             }
             // Checks if both sortBy's value and sortMode's were passed to the URI correctly
@@ -111,7 +124,22 @@ app.get('/api/books', (req, res) => {
                     .sort({ title: sortMode }) // sortMode here could be -1 or 1 depending on the value the user has passed to sortMode in the URI
                     
                     .then((results) => {
-                    res.status(200).send(results);
+                    res.status(200).json({
+                        results,
+                        //HATEOAS implementation
+                        "links": [
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                                "action": "GET"
+                            },
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                                "action": "DELETE"
+                            }
+                        ]
+                    });
                     })
                     .catch((err) => {
                         res.status(500).send(err);
@@ -126,7 +154,22 @@ app.get('/api/books', (req, res) => {
                     .sort({ author: sortMode })
                     
                     .then((results) => {
-                    res.status(200).send(results);
+                    res.status(200).json({
+                        results,
+                        //HATEOAS implementation
+                        "links": [
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                                "action": "GET"
+                            },
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                                "action": "DELETE"
+                            }
+                        ]
+                    });
                     })
                     .catch((err) => {
                         res.status(500).send(err);
@@ -144,8 +187,22 @@ app.get('/api/books', (req, res) => {
             
             .then((results) => {
                res.status(200).json({
-                   "URI": `http://localhost:5000/api/books?page=${(page - 1) * limit === 0 ? 1 : (page - 1) * limit}&limit=${limit}`,
-                   results});
+                   "URI": `https://book-directory-system-api.herokuapp.com/api/books?page=${(page - 1) * limit === 0 ? 1 : (page - 1) * limit}&limit=${limit}`,
+                   results,
+                   //HATEOAS implementation
+                   "links": [
+                       {
+                           "rel": "book",
+                           "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                           "action": "GET"
+                       },
+                       {
+                           "rel": "book",
+                           "href": `https://book-directory-system-api.herokuapp.com/api/books/:id`,
+                           "action": "DELETE"
+                       }
+                   ]
+                });
             })
             .catch((err) => {
                 res.status(500).send(err);
@@ -191,7 +248,20 @@ app.post('/api/books', (req, res) => {
                 .then((book) => {
                     res.status(201).json({
                         "message": "Book has been successfully uploaded",
-                        book
+                        book,
+                        //HATEOAS implementation
+                        "links": [
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/${book.id}`,
+                                "action": "GET"
+                            },
+                            {
+                                "rel": "book",
+                                "href": `https://book-directory-system-api.herokuapp.com/api/books/${book.id}`,
+                                "action": "DELETE"
+                            }
+                        ]
                     });
                 })
                 .catch((err) => {
@@ -222,7 +292,15 @@ app.get('/api/books/:id', (req, res) => {
             })
             :
             res.status(200).json({
-                "message": getBookData
+                "message": getBookData,
+                // HATEOAS implementation
+                "links": [
+                    {
+                        "rel": "self",
+                        "href": `https://book-directory-system-api.herokuapp.com/api/books/${bookId}`,
+                        "action": "DELETE"
+                    },
+                ]
             });
         }
     })
