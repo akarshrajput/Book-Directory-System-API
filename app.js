@@ -15,4 +15,8 @@ app.use((req, res, next) =>
 	next();
 });
 
+app.use(bodyParser.json({ limit: '100mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: 'true' }));
+app.use(bodyParser.json({ type: 'application/vnd.api+json' }));
+
 module.exports = app;
