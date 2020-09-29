@@ -227,7 +227,7 @@ app.post('/api/books', (req, res) => {
     if (filePathChecker === '.jpg') // If file extension gotten equals .jpg (NB: Only .jpg files are allowed to be uploaded)
     {
         // upload image file my cloudinary server
-        cloudinary.uploader.upload(req.body.cover_image, { tags: 'Book Dirctory System API', upload_preset: 'uploaded_through_url' }, (cloudErr, Cloudimage) =>
+        cloudinary.uploader.upload(req.body.cover_image, { tags: 'Uploded Through URL', upload_preset: 'uploaded_through_url' }, (cloudErr, Cloudimage) =>
         {
             if (cloudErr)
             {
@@ -291,7 +291,7 @@ app.post('/api/books_with_file', (req, res) => {
     }
 
     // upload image file my cloudinary server
-    cloudinary.uploader.upload(req.body.cover_image, { tags: 'Book Dirctory System API', upload_preset: 'uploaded_as_file' }, (cloudErr, Cloudimage) =>
+    cloudinary.uploader.upload(req.body.cover_image, { tags: 'Uploaded As File', upload_preset: 'uploaded_as_file' }, (cloudErr, Cloudimage) =>
     {
         if (cloudErr)
         {
