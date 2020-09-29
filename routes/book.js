@@ -227,7 +227,7 @@ app.post('/api/books', (req, res) => {
     if (filePathChecker === '.jpg') // If file extension gotten equals .jpg (NB: Only .jpg files are allowed to be uploaded)
     {
         // upload image file my cloudinary server
-        cloudinary.uploader.upload(req.body.cover_image, { tags: 'Book Dirctory System API' }, (cloudErr, Cloudimage) =>
+        cloudinary.uploader.upload(req.body.cover_image, { tags: 'Book Dirctory System API', upload_preset: 'uploaded_through_url' }, (cloudErr, Cloudimage) =>
         {
             if (cloudErr)
             {
@@ -275,6 +275,66 @@ app.post('/api/books', (req, res) => {
         res.status(400).send('File selected is not a jpg file');
     }
 })
+
+
+
+// For upload on React With Input File
+app.post('/api/books_with_file', (req, res) => {
+
+    // Checks if the book title, description, cover_image and author were not passed to the body
+    if(!req.body.title || !req.body.description || !req.body.cover_image || !req.body.author)
+    {
+        res.status(417).json({
+            "message": 'Request failed due to all required inputs were not included',
+            "required inputs": "title, description, cover_image, author"
+        });
+    }
+
+    // upload image file my cloudinary server
+    cloudinary.uploader.upload(req.body.cover_image, { tags: 'Book Dirctory System API', upload_preset: 'uploaded_as_file' }, (cloudErr, Cloudimage) =>
+    {
+        if (cloudErr)
+        {
+            res.status(500).json({
+                "message": `We encountered an issue proccessing this upload, incase you're uploading through an API, please make sure you select the correect path where the image (jpg) is located at, e.g C:/Users/Username/Desktop/image.jpg.`
+            });
+        }
+        if (Cloudimage)
+        {
+            generatedCloudinaryImageId = Cloudimage.public_id; // Get the public_id/unique Id generated for the image uploaded (NB: This is seriously needed when deleting a book)
+            generatedCloudinaryImageUrl = Cloudimage.url; // Get the url generated for the image uploaded (NB: User can see the picture attached to a particular book with the url here)
+
+            let newBook = new Book({
+                title: req.body.title, description: req.body.description, cover_image: generatedCloudinaryImageId, cover_image_url: generatedCloudinaryImageUrl, author: req.body.author
+            })
+
+            newBook.save()
+            .then((book) => {
+                res.status(201).json({
+                    "message": "Book has been successfully uploaded",
+                    book,
+                    //HATEOAS implementation
+                    "links": [
+                        {
+                            "rel": "book",
+                            "href": `https://book-directory-system-api.herokuapp.com/api/books/${book.id}`,
+                            "action": "GET"
+                        },
+                        {
+                            "rel": "book",
+                            "href": `https://book-directory-system-api.herokuapp.com/api/books/${book.id}`,
+                            "action": "DELETE"
+                        }
+                    ]
+                });
+            })
+            .catch((err) => {
+                res.status(500).send(`We encountered an issue uploading book, try again.`)
+            })
+        }
+    });
+})
+
 
 
 app.get('/api/books/:id', (req, res) => {
