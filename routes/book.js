@@ -224,7 +224,7 @@ app.post('/api/books', (req, res) => {
     }
 
     const filePathChecker = path.extname(req.body.cover_image); // Collect the file extension of the file passed to the body
-    if (filePathChecker === '.jpg') // If file extension gotten equals .jpg (NB: Only .jpg files are allowed to be uploaded)
+    if (filePathChecker === '.jpg' || filePathChecker === '.jpeg' || filePathChecker === '.png' || filePathChecker === '.gif') // If file extension gotten equals .jpg, .jpeg, .png, .gif (NB: Only .jpg, .jpeg, .png, .gif files are allowed to be uploaded)
     {
         // upload image file my cloudinary server
         cloudinary.uploader.upload(req.body.cover_image, { tags: 'Uploded Through URL', upload_preset: 'uploaded_through_url' }, (cloudErr, Cloudimage) =>
@@ -272,7 +272,7 @@ app.post('/api/books', (req, res) => {
     }
     else
     {
-        res.status(400).send('File selected is not a jpg file');
+        res.status(400).send('File in the url or link is not a jpg/jpeg/png/gif file');
     }
 })
 

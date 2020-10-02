@@ -1,7 +1,7 @@
 # Book-Directory-System-API
 This is a Node.js & Express.js API used in managing a book directory system with the help Cloudinary for storing image (book cover) and MongoDB's Mongoose for storing data to the database also HATEOAS was implemented to make this API more understandable.
 
-*This API is used in storing and managing books data such as book title, author, short description of what the book is all about in a mongoDB's mongoose server including uploading of book cover (image file, supported format .jpg) to my cloudinary library.*
+*This API is used in storing and managing books data such as book title, author, short description of what the book is all about in a mongoDB's mongoose server including uploading of book cover (image file, supported format .jpg/.jpeg/.png/.gif) to my cloudinary library.*
 
 **<u>How The API Works</u>**
 
@@ -23,7 +23,7 @@ NB: You may need Postman application to completely make use of this API.
 
         The "cover_image" value "Explained Below" needs to be replaced by location path of your favourite image's cover, e.g. **C:/username/Desktop/image.jpg** or a link to any image file uploaded online already, e.g **https://website.com/kdk.jpg**
 
-        NB: Your favourite image's cover must be in a .jpg format as that is what is currently allowed to be uploaded by me.
+        NB: Your favourite image's cover must be either in a .jpg/.png/.jpeg/.gif format as that is what is currently allowed to be uploaded by me.
 
 - Users are able to preview a particular book once they have gotton the book's unique ID after uploading it or after seeing it from the display of all books that has been stored. Below is how you can archieve this.
     - Visit https://book-directory-system-api.herokuapp.com/api/books/:id (in this link you need to replace **:id** with unique ID you had gotten earlier.) using a **GET** http verb.
